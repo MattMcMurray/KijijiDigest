@@ -1,0 +1,16 @@
+{
+  "name": "kijiji-truck-scraper",
+  "version": "1.0.0",
+  "description": "A simple app to scrape kijiji and report findings to me daily.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Mathieu McMurray",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "kijiji-scraper": "^1.4.0",
+    "mailgun-js": "^0.11.2"
+  }
+}
