@@ -36,7 +36,7 @@ function sendEmail(msgBody) {
 	var data = {
 		from: process.env.MAILGUN_FROM,
 		to: process.env.MAILGUN_TO,
-		subject: 'Kijiji Summary',
+		subject: 'Your Kijiji Digest',
     text: 'HTML Email not supported',
 		html: msgBody
 	};
@@ -71,6 +71,15 @@ function compileEmail(ads) {
     // I hate to do this, but I need to finish this project in 20 mins
     // and don't have time to learn a framework D:
     if (title && link && desc && price) {
+      email += `
+				<html>
+					<head>
+						<meta name="viewport" content="width=device-width">
+						<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+						<title>Your Kiji Summary</title>
+					</head>
+					<body>
+      `
       email += '<h1>' + title + '</h1>';
       email += '<h3>' + date + '</h3>';
       email += '<h2>Price:</h2>';
@@ -81,28 +90,28 @@ function compileEmail(ads) {
       if (img)
         email += '<br><img src=' + img + '>';
       email += '<hr><br>';
-      email += `
-        <style>
-        body { background-color: #2b2a2a; color: #f4f4f4; font-family: sans-serif; }
-        a { color: #f4f4f4; }
-        </style>
-      `
+      email += '</body></html>'
     }
   }
 
   return email;
 }
 
-scrape()
- .then(ads => {
-    return compileEmail(ads);
-  })
-	.then(body => {
-		return sendEmail(body);
-	})
-  .then(result => {
-    console.log('Message queued.');
-  })
-  .catch(err => {
-    console.error(err);
-  });
+module.exports = {
+	run: () => {
+		scrape()
+		 .then(ads => {
+				return compileEmail(ads);
+			})
+			.then(body => {
+				return sendEmail(body);
+			})
+			.then(result => {
+				console.log('Message queued.');
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
+}
+
